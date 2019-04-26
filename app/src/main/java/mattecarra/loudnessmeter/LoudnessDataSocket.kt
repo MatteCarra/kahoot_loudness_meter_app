@@ -37,6 +37,9 @@ class LoudnessDataSocket(val ip: String, val handler: Handler): Runnable {
             is DataPacket -> {
                 handler.obtainMessage(DATA_PACKET, packet.data).sendToTarget()
             }
+            is KeepAlive -> {
+                sendPacket(KeepAlive(packet.id!!))
+            }
         }
     }
 
