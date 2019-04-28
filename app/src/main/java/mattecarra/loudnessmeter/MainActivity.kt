@@ -67,6 +67,7 @@ class MainActivity : AppCompatActivity(), OnChartValueSelectedListener{
         chart.setDrawGridBackground(false);
         chart.description.isEnabled = false;
         chart.setNoDataText("No chart data available yet");
+        chart.isAutoScaleMinMaxEnabled = true
     }
 
     private fun createSet(): LineDataSet {
@@ -78,6 +79,7 @@ class MainActivity : AppCompatActivity(), OnChartValueSelectedListener{
         set.highLightColor = Color.rgb(190, 190, 190);
         set.axisDependency = YAxis.AxisDependency.LEFT;
         set.valueTextSize = 10f;
+
         return set;
     }
 
@@ -92,14 +94,12 @@ class MainActivity : AppCompatActivity(), OnChartValueSelectedListener{
 
         val set = data.getDataSetByIndex(0);
         data.addEntry(Entry(set.entryCount.toFloat(), value.toFloat()), 0);
-
         data.notifyDataChanged();
+
         chart.notifyDataSetChanged();
+        chart.setVisibleXRangeMaximum(100f);
 
-        chart.setVisibleYRangeMaximum(256f, YAxis.AxisDependency.LEFT);
-        chart.setVisibleXRangeMaximum(50f);
-
-        chart.moveViewTo(data.entryCount - 51f, 0f, YAxis.AxisDependency.LEFT);
+        chart.moveViewTo(data.entryCount - 51f, (chart.yMax - chart.yMin)/2, YAxis.AxisDependency.LEFT);
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
