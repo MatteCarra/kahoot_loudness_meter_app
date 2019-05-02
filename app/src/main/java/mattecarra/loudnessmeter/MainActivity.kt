@@ -18,7 +18,7 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 
-class MainActivity : AppCompatActivity(), OnChartValueSelectedListener{
+class MainActivity : AppCompatActivity() {
     private lateinit var chart: LineChart
     private var loudnessDataSocket: LoudnessDataSocket? = null
     private var dialog: MaterialDialog? = null
@@ -63,7 +63,6 @@ class MainActivity : AppCompatActivity(), OnChartValueSelectedListener{
 
     private fun initCharts() {
         chart = findViewById(R.id.chart1);
-        chart.setOnChartValueSelectedListener(this);
         chart.setDrawGridBackground(false);
         chart.description.isEnabled = false;
         chart.setNoDataText("No chart data available yet");
@@ -73,13 +72,12 @@ class MainActivity : AppCompatActivity(), OnChartValueSelectedListener{
     private fun createSet(): LineDataSet {
         val set = LineDataSet(null, "Loudness meter");
         set.lineWidth = 2.5f;
-        set.circleRadius = 4.5f;
+        set.setDrawCircles(false)
         set.color = Color.rgb(240, 99, 99);
         set.setCircleColor(Color.rgb(240, 99, 99));
         set.highLightColor = Color.rgb(190, 190, 190);
         set.axisDependency = YAxis.AxisDependency.LEFT;
-        set.valueTextSize = 10f;
-
+        set.valueTextSize = 8f;
         return set;
     }
 
@@ -97,7 +95,8 @@ class MainActivity : AppCompatActivity(), OnChartValueSelectedListener{
         data.notifyDataChanged();
 
         chart.notifyDataSetChanged();
-        chart.setVisibleXRangeMaximum(100f);
+
+        chart.setVisibleXRangeMaximum(600f) //~ 1 minute
 
         chart.moveViewTo(data.entryCount - 51f, (chart.yMax - chart.yMin)/2, YAxis.AxisDependency.LEFT);
     }
@@ -116,11 +115,5 @@ class MainActivity : AppCompatActivity(), OnChartValueSelectedListener{
         }
 
         super.onDestroy()
-    }
-
-    override fun onNothingSelected() {}
-
-    override fun onValueSelected(e: Entry?, h: Highlight?) {
-        Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
     }
 }
