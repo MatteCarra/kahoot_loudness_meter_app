@@ -6,7 +6,6 @@ import android.os.Handler
 import android.os.Looper
 import android.os.Message
 import android.view.KeyEvent
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.input.input
@@ -15,12 +14,11 @@ import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
-import com.github.mikephil.charting.highlight.Highlight
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener
+import mattecarra.loudnessmeter.protocol.LoudnessClient
 
 class MainActivity : AppCompatActivity() {
     private lateinit var chart: LineChart
-    private var loudnessDataSocket: LoudnessDataSocket? = null
+    private var loudnessClient: LoudnessClient? = null
     private var dialog: MaterialDialog? = null
 
     companion object {
@@ -47,7 +45,8 @@ class MainActivity : AppCompatActivity() {
             title(R.string.server_ip)
             input { _, ip ->
                 initCharts()
-                loudnessDataSocket = LoudnessDataSocket(ip.toString(), handler).connect()
+                loudnessClient = LoudnessClient(ip.toString(), handler)
+                loudnessClient?.connect()
             }
             cancelOnTouchOutside(false)
             positiveButton(R.string.connect)
@@ -113,6 +112,9 @@ class MainActivity : AppCompatActivity() {
             if(it.isShowing)
                 it.dismiss()
         }
+
+        if(loudnessClient?.connected == true)
+            loudnessClient?.stop()
 
         super.onDestroy()
     }

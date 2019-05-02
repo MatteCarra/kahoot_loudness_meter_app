@@ -1,4 +1,4 @@
-package mattecarra.loudnessmeter
+package mattecarra.loudnessmeter.protocol
 
 import android.util.SparseArray
 import androidx.core.util.contains
