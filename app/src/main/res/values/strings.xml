@@ -1,5 +1,8 @@
 <resources>
-    <string name="app_name">loudnessmeter</string>
+    <string name="app_name">Kahoot Loudness Meter</string>
     <string name="connect">Connect</string>
     <string name="server_ip">Server ip</string>
+    <string name="disconnected">Disconnected</string>
+    <string name="reconnect">Reconnect</string>
+    <string name="reconnect_dialog_message">You have been disconnected. Do you want to reconnect?</string>
 </resources>
